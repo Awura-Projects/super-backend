@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7iae$#u*)@vjm1wvof!ja(i%8wbm%0=potbnthhifjb-1q#l#c'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +85,27 @@ DATABASES = {
     }
 }
 
+DBNAME = os.getenv("DBNAME")
+DBUSER = os.getenv("DBUSER")
+DBPASSWORD = os.getenv("DBPASSWORD")
+DBHOST = os.getenv("DBHOST")
+DBPORT = os.getenv("DBPORT")
+
+DATABASE_ON = all([DBNAME, DBUSER, DBPASSWORD, DBHOST, DBPORT])
+
+if DATABASE_ON:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DBNAME,
+            'USER': DBUSER,
+            'PASSWORD': DBPASSWORD,
+            'HOST': DBHOST,
+            'PORT': DBPORT,
+        }
+    }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -99,6 +125,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Authentication model
+AUTH_USER_MODEL = 'authentication.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
