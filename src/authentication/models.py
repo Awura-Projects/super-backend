@@ -44,6 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_("Last Name"), max_length=50, blank=True, null=True)
     email = models.EmailField(_("Email"), max_length=254, unique=True)
     phone = PhoneNumberField(blank=True, null=True)
+    address = models.CharField(_("Address"), max_length=250)
     is_staff = models.BooleanField(_("Is Staff"), default=False, help_text=_("Determines whether this user can login to the admin page."))
     is_active = models.BooleanField(_("Active"), help_text=_("Designates whether the user can login to the system."), default=True)
 
