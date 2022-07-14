@@ -4,7 +4,7 @@ from model_utils import Choices
 
 from .models import User
 
-class UserSeirailzer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     """
     A serializer for the user model
     """
