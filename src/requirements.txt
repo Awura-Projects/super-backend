@@ -1,9 +1,12 @@
 asgiref==3.5.2
+aspectlib==1.5.2
 Django==3.2.14
 django-model-utils==4.2.0
 django-phonenumber-field==6.3.0
+django-timestampable==1.0.3
 djangorestframework==3.13.1
 djangorestframework-simplejwt==5.2.0
+fields==5.0.0
 phonenumberslite==8.12.51
 psycopg2==2.9.3
 PyJWT==2.4.0
