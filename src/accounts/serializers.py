@@ -16,7 +16,6 @@ class EmployeeCreateSerializer(serializers.ModelSerializer):
         """
         model = Employee
         fields = (
-            'id',
             'user',
             'profile_picture',
             'birthdate',
