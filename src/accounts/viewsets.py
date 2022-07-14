@@ -6,6 +6,11 @@ from .serializers import (
     SupplierSerializer, SupplierUpdateSerializer,
     DeliverySerializer, DeliveryUpdateSerializer,
 )
+from .permissions import (
+    IsAdminOrSelfEmployee,
+    IsAdminOrSelfSupplier,
+    IsAdminOrSelfDelivery,
+)
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     """
@@ -24,6 +29,12 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
         return self.serializer_class
 
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            permission_classes = [IsAdminOrSelfEmployee]
+            return [permission() for permission in permission_classes]
+        return super().get_permissions()
+
 class SupplierViewSet(viewsets.ModelViewSet):
     """
     Supplier model serializer
@@ -41,6 +52,12 @@ class SupplierViewSet(viewsets.ModelViewSet):
 
         return self.serializer_class
 
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            permission_classes = [IsAdminOrSelfSupplier]
+            return [permission() for permission in permission_classes]
+        return super().get_permissions()
+
 class DeliveryViewSet(viewsets.ModelViewSet):
     """
     Delivery model serializer
@@ -57,3 +74,9 @@ class DeliveryViewSet(viewsets.ModelViewSet):
             return DeliveryUpdateSerializer
 
         return self.serializer_class
+
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            permission_classes = [IsAdminOrSelfDelivery]
+            return [permission() for permission in permission_classes]
+        return super().get_permissions()
