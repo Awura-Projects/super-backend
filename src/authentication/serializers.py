@@ -8,6 +8,7 @@ class UserSeirailzer(serializers.ModelSerializer):
     """
     A serializer for the user model
     """
+    # id = serializers.HyperlinkedIdentityField('user-detail')
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})
     confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
     user_type = serializers.CharField(read_only=True)
