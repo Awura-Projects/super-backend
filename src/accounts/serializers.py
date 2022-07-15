@@ -1,8 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from authentication.serializers import UserSerializer
 from .models import Employee, Supplier, Delivery
+
+User = get_user_model()
 
 class EmployeeSerializer(serializers.ModelSerializer):
     """
@@ -172,4 +176,61 @@ class DeliveryUpdateSerializer(serializers.ModelSerializer):
             'profile_picture',
             'birthdate',
             'identification_card',
+        )
+
+class CustomerSignupForm(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+
+    class Meta:
+        """
+        Meta class
+        """
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'password',
+            'confirm_password',
+            'phone',
+            'user_type',
+        )
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
+
+    def validate(self, attrs):
+        password = attrs.get('password')
+        confirm_password = attrs.get('confirm_password')
+
+        if password != confirm_password:
+            raise serializers.ValidationError(
+                {
+                    'password': 'Passwords doesn\'t match',
+                }
+            )
+
+        return attrs
+
+    def create(self, validated_data):
+        validated_data.pop("confirm_password")
+        password = validated_data.pop("password")
+
+        user = super().create(validated_data)
+        user.set_password(password)
+        group, created = Group.objects.get_or_create(name='customer')
+        user.groups.add(group)
+
+        return user
+
+class CustomerUpdateForm(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
         )
