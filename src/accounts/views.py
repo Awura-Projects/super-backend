@@ -1,7 +1,7 @@
-from rest_framework import views
+from rest_framework import views, permissions
 from rest_framework.response import Response
 
-from authentication.serializers import UserSerializer
+from authentication.serializers import UserSerializer, PasswordChangeForm
 from .permissions import IsCustomer
 from .serializers import CustomerSignupForm, CustomerUpdateForm
 
@@ -31,6 +31,19 @@ class CustomerUpdateAPIView(views.APIView):
     def put(self, request, pk=None):
         user = request.user
         serializer = CustomerUpdateForm(instance=user, data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return Response(serializer.data)
+
+
+class PasswordChangeAPIView(views.APIView):
+    serializer_class = PasswordChangeForm
+    permission_classes = [permissions.IsAuthenticated]
+
+    def put(self, request):
+        serializer = PasswordChangeForm(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
