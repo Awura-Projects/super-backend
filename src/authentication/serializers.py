@@ -58,25 +58,15 @@ class PasswordChangeForm(serializers.Serializer):
     new_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
     confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
 
-    def validate_password(self, value):
-        request = self.context.get('request')
-        user = request.user
-
-        if not user.check_password(value):
-            raise serializers.ValidationError(
-                {
-                    'password': 'The entered password is not valid',
-                }
-            )
-
-        return value
-
     def validate_new_password(self, value):
         validate_password(value)
 
         return value
 
     def validate(self, attrs):
+        request = self.context.get('request')
+        user = request.user
+        password = attrs.get('password')
         new_password = attrs.get('new_password')
         confirm_password = attrs.get('confirm_password')
 
@@ -84,6 +74,13 @@ class PasswordChangeForm(serializers.Serializer):
             raise serializers.ValidationError(
                 {
                     'new_password': 'Passwords don\'t match',
+                }
+            )
+
+        if not user.check_password(password):
+            raise serializers.ValidationError(
+                {
+                    'password': 'Invalid password',
                 }
             )
 
