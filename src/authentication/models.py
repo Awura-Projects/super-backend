@@ -58,11 +58,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def user_type(self) -> str:
-        if self.is_superuser:
-            return "superuser"
-        if self.is_staff:
-            return "admin"
-        
         group = self.groups.first()
         if group is not None:
             return group.name
