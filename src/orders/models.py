@@ -48,7 +48,12 @@ class CartItem(Model):
     )
     quantity = models.PositiveIntegerField(_("Quantity"))
     unit_price = models.DecimalField(_("Unit Price"), max_digits=6, decimal_places=2)
-    discount = models.DecimalField(_("Discount"), max_digits=3, decimal_places=2)
+    discount = models.DecimalField(
+        _("Discount"),
+        max_digits=3,
+        decimal_places=2,
+        blank=True, null=True
+    )
 
     def clean(self):
         discount = self.discount
