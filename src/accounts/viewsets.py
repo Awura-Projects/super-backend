@@ -10,6 +10,7 @@ from .permissions import (
     IsAdminOrSelfEmployee,
     IsAdminOrSelfSupplier,
     IsAdminOrSelfDelivery,
+    IsCustomer
 )
 
 class EmployeeViewSet(viewsets.ModelViewSet):
@@ -77,6 +78,9 @@ class DeliveryViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'retrieve':
-            permission_classes = [IsAdminOrSelfDelivery]
+            permission_classes = [
+                IsAdminOrSelfDelivery,
+                IsCustomer,
+            ]
             return [permission() for permission in permission_classes]
         return super().get_permissions()
