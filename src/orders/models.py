@@ -15,6 +15,7 @@ class Cart(Model):
         settings.AUTH_USER_MODEL,
         verbose_name=_("Delivery Man"),
         on_delete=models.CASCADE,
+        related_name='delivery_man',
         blank=True, null=True
     )
     status = models.BooleanField(_("Status"), blank=True, null=True)
