@@ -32,7 +32,7 @@ class Cart(Model):
                 }
             )
 
-class CartItems(Model):
+class CartItem(Model):
     cart = models.ForeignKey(
         "orders.Cart",
         verbose_name=_("Cart"),
