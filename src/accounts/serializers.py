@@ -87,7 +87,7 @@ class SupplierSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_validated_data = validated_data.pop('user')
 
-        group, created = Group.objects.get_or_create(name='Supplier')
+        group, created = Group.objects.get_or_create(name='supplier')
 
         user = UserSerializer.create(
             UserSerializer(),
@@ -144,7 +144,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user_validated_data = validated_data.pop('user')
 
-        group, created = Group.objects.get_or_create(name='Delivery')
+        group, created = Group.objects.get_or_create(name='delivery')
 
         user = UserSerializer.create(
             UserSerializer(),
