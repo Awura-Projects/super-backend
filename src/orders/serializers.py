@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Cart, CartItem
 
 class CartItemSerializer(serializers.ModelSerializer):
-
+    # product = serializers.HyperlinkedIdentityField('product-detail')
     class Meta:
         model = CartItem
         fields = (
@@ -23,6 +23,7 @@ class CartSerializer(serializers.ModelSerializer):
             'user',
             'order_date',
             'delivery_man',
-            'status',
+            'closed',
+            'closed_time',
             'items',
         )
