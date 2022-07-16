@@ -48,11 +48,28 @@ class IsAdminOrSelfDelivery(permissions.BasePermission):
 
         return False
 
-class IsCustomer(permissions.BasePermission):
-    def has_permission(self, request, view):
+class IsSelfCustomer(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
         user = request.user
 
-        if user.user_type == "customer":
+        if user.user_type == 'customer':
+            if user == obj:
+                return True
+
+        return False
+
+class IsAdminOrDeliveryOrSelfCustomer(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+
+        if user.is_staff:
             return True
+
+        if user.user_type == 'delivery':
+            return True
+
+        if user.user_type == 'customer':
+            if user == obj:
+                return
 
         return False
