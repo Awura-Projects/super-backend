@@ -18,10 +18,8 @@ class Cart(Model):
         related_name='delivery_man',
         blank=True, null=True
     )
-    status = models.BooleanField(_("Status"), blank=True, null=True, default=False)
-    # True means that the cart had been accepted by the customer
-    # False means the cart is still not accepted by the customer
-
+    closed = models.BooleanField(_("Status"), default=False)
+    closed_time = models.DateTimeField(_("Closed Time"), auto_now=False, auto_now_add=False, blank=True)
     def clean(self):
         delivery_man = self.delivery_man
 
