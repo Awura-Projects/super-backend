@@ -19,7 +19,11 @@ class Cart(Model):
         blank=True, null=True
     )
     closed = models.BooleanField(_("Status"), default=False)
-    closed_time = models.DateTimeField(_("Closed Time"), auto_now=False, auto_now_add=False, blank=True)
+    closed_time = models.DateTimeField(
+        _("Closed Time"), auto_now=False,
+        auto_now_add=False, blank=True,
+        null=True
+    )
     def clean(self):
         delivery_man = self.delivery_man
 
