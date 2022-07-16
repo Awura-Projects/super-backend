@@ -11,6 +11,6 @@ class Producer(Model):
 class Product(Model):
     productName = models.CharField(max_length=100)
     productType = models.CharField(max_length=100)
-    Description = models.TextField(max_length=100)
-    Amount = models.CharField(max_length=100)
+    description = models.TextField(max_length=100)
+    amount = models.CharField(max_length=100)
     producer= models.ForeignKey(Producer,on_delete=models.CASCADE)
