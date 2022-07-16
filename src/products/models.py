@@ -15,5 +15,6 @@ class Product(Model):
     productName = models.CharField(max_length=100)
     productType = models.CharField(max_length=100)
     description = models.TextField(max_length=100)
-    amount = models.CharField(max_length=100)
+    amount = models.PositiveIntegerField(_("Amount"))
+    price = models.DecimalField(_("Price"), max_digits=6, decimal_places=2)
     discount = models.DecimalField(_("Discount"), max_digits=3, decimal_places=2, blank=True, null=True)
