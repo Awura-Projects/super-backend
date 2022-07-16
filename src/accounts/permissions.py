@@ -73,3 +73,12 @@ class IsAdminOrDeliveryOrSelfCustomer(permissions.BasePermission):
                 return
 
         return False
+
+class IsCustomer(permissions.BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+
+        if user.user_type == 'customer':
+            return True
+
+        return False
