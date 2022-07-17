@@ -98,12 +98,14 @@ class CartItemSerializer(serializers.ModelSerializer):
         return cart_item
 
 class CartSerializer(serializers.ModelSerializer):
+    id = serializers.HyperlinkedIdentityField('cart-detail')
     user = serializers.HyperlinkedIdentityField("customer-detail")
     delivery_man = serializers.HyperlinkedIdentityField("delivery-detail")
     items = CartItemSerializer(many=True)
     class Meta:
         model = Cart
         fields = (
+            'id',
             'user',
             'order_date',
             'delivery_man',
