@@ -26,3 +26,10 @@ class CartItemViewSet(mixins.RetrieveModelMixin,
             return [permission() for permission in permission_classes]
 
         return super().get_permissions()
+
+    def perform_destroy(self, instance):
+        product = instance.product
+        product.amount += instance.quantity
+        product.save()
+
+        instance.delete()
