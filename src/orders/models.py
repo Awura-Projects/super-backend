@@ -24,6 +24,7 @@ class Cart(Model):
         auto_now_add=False, blank=True,
         null=True
     )
+    payed = models.BooleanField(_("Payed"), default=False)
     def clean(self):
         delivery_man = self.delivery_man
 
