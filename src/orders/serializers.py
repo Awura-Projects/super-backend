@@ -4,12 +4,14 @@ from products.models import Product
 from .models import Cart, CartItem
 
 class CartItemSerializer(serializers.ModelSerializer):
+    id = serializers.HyperlinkedIdentityField('cartitem-detail')
     # product = serializers.HyperlinkedIdentityField('product-detail')
     unit_price = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
     discount = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
     class Meta:
         model = CartItem
         fields = (
+            'id',
             'product',
             'quantity',
             'unit_price',
