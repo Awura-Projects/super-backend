@@ -102,6 +102,9 @@ class CartSerializer(serializers.ModelSerializer):
     user = serializers.HyperlinkedIdentityField("customer-detail")
     delivery_man = serializers.HyperlinkedIdentityField("delivery-detail")
     items = CartItemSerializer(many=True)
+    closed = serializers.BooleanField(read_only=True)
+    payed = serializers.BooleanField(read_only=True)
+    closed_time = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Cart
         fields = (
