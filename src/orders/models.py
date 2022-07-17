@@ -35,6 +35,14 @@ class Cart(Model):
                 }
             )
 
+    def delete(self, using=None, keep_parents=False, hard: bool = False):
+        cart = self
+        cart_items = cart.items.all()
+        for cart_item in cart_items:
+            cart_item.delete(hard=hard)
+
+        return super().delete(using=using, keep_parents=keep_parents, hard=hard)
+
 class CartItem(Model):
     cart = models.ForeignKey(
         "orders.Cart",
@@ -64,3 +72,10 @@ class CartItem(Model):
                     'discount': 'Discount cannot be negative number'
                 }
             )
+
+    def delete(self, using=None, keep_parents=False, hard: bool = False):
+        product = self.product
+        product.amount += self.quantity
+        product.save()
+
+        return super().delete(hard=hard)
