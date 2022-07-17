@@ -110,6 +110,7 @@ class CartSerializer(serializers.ModelSerializer):
             'order_date',
             'delivery_man',
             'closed',
+            'payed',
             'closed_time',
             'items',
         )
