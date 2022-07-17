@@ -7,7 +7,7 @@ from .models import Cart
 from .permissions import IsSelfCart
 from .serializers import CartSerializer
 
-class CartRetrieveAPIView(generics.RetrieveAPIView):
+class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
     serializer_class = CartSerializer
     permission_classes = [
         permissions.IsAuthenticated,
