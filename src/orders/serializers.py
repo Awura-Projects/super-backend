@@ -19,24 +19,10 @@ class CartItemSerializer(serializers.ModelSerializer):
     def validate_quantity(self, value):
         if value <= 0:
             raise serializers.ValidationError(
-                {
-                    'quantity': 'This field should be a positive integer'
-                }
+                'This field should be a positive integer greater than 0'
             )
 
         return value
-
-    def validate(self, attrs):
-        product = attrs.get('product')
-        quantity = attrs.get('quantity')
-        if product.amount < quantity:
-            raise serializers.ValidationError(
-                {
-                    'quantity': 'The quantity is larger than the available amount'
-                }
-            )
-
-        return attrs
 
     def create(self, validated_data):
         request = self.context.get('request')
@@ -44,6 +30,12 @@ class CartItemSerializer(serializers.ModelSerializer):
 
         product = validated_data['product']
         quantity = validated_data['quantity']
+        if product.amount < quantity:
+            raise serializers.ValidationError(
+                {
+                    'quantity': 'The quantity is larger than the available amount'
+                }
+            )
 
         cart_set = user.cart_set.filter(closed=False)
         if cart_set.exists():
@@ -57,7 +49,18 @@ class CartItemSerializer(serializers.ModelSerializer):
         if cart_item.exists():
             cart_item = cart_item.first()
             old_quantity = cart_item.quantity
+            new_amount = product.amount - quantity
+            if new_amount < 0:
+                raise serializers.ValidationError(
+                    {
+                        'quantity': 'The quantity is larger than the available amount'
+                    }
+                )
+
             cart_item.quantity = old_quantity + quantity
+            cart_item.save()
+            product.amount = new_amount
+            product.save()
 
         else:
             cart_item = CartItem.objects.create(
@@ -68,24 +71,26 @@ class CartItemSerializer(serializers.ModelSerializer):
                 discount=product.discount
             )
 
-        product.amount = product.amount - cart_item.quantity
-        product.save()
+            new_amount = product.amount - quantity
+            product.amount = new_amount
+            product.save()
 
         return cart_item
 
     def update(self, instance, validated_data):
         product = validated_data['product']
+        quantity = validated_data['quantity']
         old_quantity = instance.quantity
-        new_quantity = product.amount + old_quantity - cart_item.quantity
+        new_amount = product.amount + old_quantity - quantity
 
-        if new_quantity < 0:
+        if new_amount < 0:
             raise serializers.ValidationError(
                 {
-                    'quantity': 'The quantity is larger than tha available amount'
+                    'quantity': 'The quantity is larger than the available amount'
                 }
             )
         cart_item = super().update(instance, validated_data)
-        product.amount = new_quantity
+        product.amount = new_amount
         product.save()
 
         return cart_item
