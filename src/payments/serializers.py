@@ -13,14 +13,14 @@ def cart_item_calculator(cart_item :CartItem):
 
 
 class PaymentSerailzer(serializers.ModelSerializer):
-    customer = serializers.HyperlinkedIdentityField('customer-detail')
+    user = serializers.HyperlinkedIdentityField('customer-detail')
     cart = serializers.HyperlinkedIdentityField('cart-detail')
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     payment_date = serializers.DateTimeField(read_only=True)
     class Meta:
         model = Payment
         fields = (
-            'customer',
+            'user',
             'cart',
             'total_amount',
             'payment_date',
