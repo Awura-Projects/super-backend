@@ -27,6 +27,15 @@ class PaymentSerailzer(serializers.ModelSerializer):
             'reciept',
         )
 
+    def validate_cart(self, value):
+        cart = value
+        if not cart.closed:
+            raise serializers.ValidationError(
+                "Cart is not closed"
+            )
+
+        return value
+
     def create(self, validated_data):
         cart = validated_data.get('cart')
         payment = super().create(validated_data)
