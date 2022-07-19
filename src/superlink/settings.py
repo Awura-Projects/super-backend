@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third party applications
     'rest_framework',
+    'crispy_forms',
 
+    # local application
     'authentication',
     'products',
     'accounts',
     'orders',
-    'crispy_forms',
+    'payments',
 ]
 
 MIDDLEWARE = [
