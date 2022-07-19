@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import generics, permissions
 
-# Create your views here.
+from .serializers import PaymentSerailzer
+
+class PaymentCreateAPIView(generics.CreateAPIView):
+    serializer_class = PaymentSerailzer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
