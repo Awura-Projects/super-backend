@@ -29,9 +29,15 @@ class PaymentSerailzer(serializers.ModelSerializer):
 
     def validate_cart(self, value):
         cart = value
+        request = self.context.get('request')
+        user = request.user
+        if cart.user != user:
+            raise serializers.ValidationError(
+                "This cart is not yours."
+            )
         if not cart.closed:
             raise serializers.ValidationError(
-                "Cart is not closed"
+                "Cart is not closed."
             )
 
         return value
