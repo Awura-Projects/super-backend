@@ -11,6 +11,17 @@ from .serializers import CustomerSignupForm, CustomerUpdateForm
 
 User = get_user_model()
 
+class UserRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get_object(self):
+        user = self.request.user
+
+        return user
+
 class CustomerSignupAPIView(views.APIView):
     serializer_class = CustomerSignupForm
 

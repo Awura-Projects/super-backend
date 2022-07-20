@@ -23,7 +23,7 @@ class CartHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
         return Cart.objects.filter(user=user)
 
 class PaymentSerailzer(serializers.ModelSerializer):
-    user = serializers.HyperlinkedRelatedField('customer-detail', read_only=True)
+    user = serializers.HyperlinkedRelatedField('account-detail', read_only=True)
     cart = CartHyperlinkedRelatedField('cart-detail')
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     payment_date = serializers.DateTimeField(read_only=True)

@@ -100,8 +100,8 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.HyperlinkedIdentityField('cart-detail')
-    user = serializers.HyperlinkedIdentityField("customer-detail")
-    delivery_man = serializers.HyperlinkedIdentityField("delivery-detail")
+    user = serializers.HyperlinkedRelatedField("account-detail", read_only=True)
+    delivery_man = serializers.HyperlinkedRelatedField("delivery-detail", read_only=True)
     items = CartItemSerializer(many=True)
     closed = serializers.BooleanField(read_only=True)
     payed = serializers.BooleanField(read_only=True)
