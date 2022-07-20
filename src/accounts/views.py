@@ -66,3 +66,11 @@ class PasswordChangeAPIView(views.APIView):
         serializer.save()
 
         return Response(serializer.data)
+
+class AccountRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = UserSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminOrDeliveryOrSelfCustomer,
+    ]
+    queryset = User.objects.all()
