@@ -4,11 +4,17 @@ from .models import Payment
 from .permissions import IsOwner
 from .serializers import PaymentSerailzer
 
-class PaymentCreateAPIView(generics.CreateAPIView):
+class PaymentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PaymentSerailzer
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+
+    def get_queryset(self):
+        user = self.request
+        queryset = Payment.objects.filter(user=user)
+
+        return queryset
 
 class PaymentRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = PaymentSerailzer
