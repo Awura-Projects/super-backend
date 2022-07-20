@@ -2,7 +2,7 @@ from rest_framework import permissions
 
 class IsAdminOrSelfEmployee(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        user = request
+        user = request.user
         if not user.is_authenticated:
             return False
 
@@ -18,7 +18,7 @@ class IsAdminOrSelfEmployee(permissions.BasePermission):
 
 class IsAdminOrSelfSupplier(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        user = request
+        user = request.user
         if not user.is_authenticated:
             return False
 
@@ -34,7 +34,7 @@ class IsAdminOrSelfSupplier(permissions.BasePermission):
 
 class IsAdminOrSelfDelivery(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        user = request
+        user = request.user
         if not user.is_authenticated:
             return False
 
