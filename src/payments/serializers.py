@@ -49,6 +49,11 @@ class PaymentSerailzer(serializers.ModelSerializer):
         cart = value
         request = self.context.get('request')
         user = request.user
+        payment_queryset = Payment.objects.filter(cart=cart)
+        if payment_queryset.exists():
+            raise serializers.ValidationError(
+                "This cart has already been payed."
+            )
         if cart.user != user:
             raise serializers.ValidationError(
                 "This cart is not yours."
