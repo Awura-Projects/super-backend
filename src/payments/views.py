@@ -11,7 +11,7 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
     ]
 
     def get_queryset(self):
-        user = self.request
+        user = self.request.user
         queryset = Payment.objects.filter(user=user)
 
         return queryset
@@ -24,7 +24,7 @@ class PaymentRetrieveAPIView(generics.RetrieveAPIView):
     ]
 
     def get_queryset(self):
-        user = self.request
+        user = self.request.user
         queryset = Payment.objects.filter(user=user)
 
         return queryset
