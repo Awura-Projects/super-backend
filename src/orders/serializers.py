@@ -5,6 +5,7 @@ from .models import Cart, CartItem
 
 class CartItemSerializer(serializers.ModelSerializer):
     id = serializers.HyperlinkedIdentityField('cartitem-detail')
+    cart = serializers.HyperlinkedRelatedField('cart-detail', read_only=True)
     # product = serializers.HyperlinkedIdentityField('product-detail')
     unit_price = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
     discount = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
@@ -12,6 +13,7 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = (
             'id',
+            'cart',
             'product',
             'quantity',
             'unit_price',
