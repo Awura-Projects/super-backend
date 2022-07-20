@@ -1,21 +1,30 @@
 from django.conf import settings
 from rest_framework import serializers
 
-from orders.models import CartItem
+from orders.models import CartItem, Cart
 from .models import Payment
 
 def cart_item_calculator(cart_item :CartItem):
     quantity = cart_item.quantity
     unit_price = cart_item.unit_price
-    discount = cart_item.discount
+    if cart_item.discount is None:
+        discount = 0
+    else:
+        discount = cart_item.discount
     discounted_price = unit_price - (unit_price * discount)
 
     return quantity * discounted_price
 
+class CartHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
+    def get_queryset(self):
+        request = self.context.get('request')
+        user = request.user
+
+        return Cart.objects.filter(user=user)
 
 class PaymentSerailzer(serializers.ModelSerializer):
-    user = serializers.HyperlinkedIdentityField('customer-detail')
-    cart = serializers.HyperlinkedIdentityField('cart-detail')
+    user = serializers.HyperlinkedRelatedField('customer-detail', read_only=True)
+    cart = CartHyperlinkedRelatedField('cart-detail')
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     payment_date = serializers.DateTimeField(read_only=True)
     class Meta:
@@ -46,17 +55,21 @@ class PaymentSerailzer(serializers.ModelSerializer):
             )
         if not cart.closed:
             raise serializers.ValidationError(
-                "Cart is not closed."
+                'Cart is not closed.'
             )
 
         return value
 
     def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
         cart = validated_data.get('cart')
-        payment = super().create(validated_data)
         cart_items = cart.items.all()
         cart_items_amounts = list(map(cart_item_calculator, cart_items))
         total_amount = sum(cart_items_amounts)
-        payment.total_amount = total_amount
+
+        validated_data['total_amount'] = total_amount
+        validated_data['user'] = user
+        payment = super().create(validated_data)
 
         return payment
