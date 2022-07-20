@@ -2,8 +2,7 @@ from django.urls import path, include
 
 from .views import (
     CustomerSignupAPIView, CustomerUpdateAPIView,
-    PasswordChangeAPIView, CustomerRetrieveAPIView,
-    UserRetrieveAPIView
+    PasswordChangeAPIView, UserRetrieveAPIView
 )
 
 urlpatterns = [
