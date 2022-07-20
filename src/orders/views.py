@@ -11,6 +11,7 @@ class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
     serializer_class = CartSerializer
     permission_classes = [
         permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
         IsSelfCart
     ]
 
@@ -23,6 +24,7 @@ class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
 class CartCloseAPIView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
     ]
 
     def post(self, request, format=None):
