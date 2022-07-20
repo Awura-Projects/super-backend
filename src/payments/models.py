@@ -8,4 +8,4 @@ class Payment(Model):
     card_number = models.CharField(_("Credit Card Number"), max_length=50)
     card_holder = models.CharField(_("Card Holder"), max_length=50)
     total_amount = models.DecimalField(_("Total Amount"), max_digits=10, decimal_places=2)
-    payment_date = models.DateTimeField(_("Payment Date"), auto_now=False, auto_now_add=False)
+    payment_date = models.DateTimeField(_("Payment Date"), auto_now=False, auto_now_add=True)
