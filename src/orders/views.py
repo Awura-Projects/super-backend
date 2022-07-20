@@ -21,11 +21,30 @@ class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
         queryset = Cart.objects.filter(user=user)
         return queryset
 
+class CartListAPIView(generics.ListAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions
+    ]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        queryset = Cart.objects.filter(user=user)
+        return queryset
+
 class CartCloseAPIView(views.APIView):
     permission_classes = [
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
     ]
+
+    def get_queryset(self):
+        request = self.request
+        user = request.user
+
+        return Cart.objects.filter(user=user)
 
     def post(self, request, format=None):
         cart_id = request.data.get('cart')
