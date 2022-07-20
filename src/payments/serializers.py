@@ -71,5 +71,7 @@ class PaymentSerailzer(serializers.ModelSerializer):
         validated_data['total_amount'] = total_amount
         validated_data['user'] = user
         payment = super().create(validated_data)
+        cart.payed = True
+        cart.save()
 
         return payment
