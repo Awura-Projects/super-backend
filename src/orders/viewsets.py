@@ -12,6 +12,7 @@ class CartItemViewSet(mixins.RetrieveModelMixin,
     serializer_class = CartItemSerializer
     permission_classes = [
         permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions
     ]
     queryset = CartItem.objects.all()
 
