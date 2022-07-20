@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework import serializers
 
 from orders.models import CartItem
@@ -22,10 +23,18 @@ class PaymentSerailzer(serializers.ModelSerializer):
         fields = (
             'user',
             'cart',
+            'card_number',
+            'card_holder',
             'total_amount',
             'payment_date',
-            'reciept',
         )
+
+    def validate_card_number(self, value):
+        if not value in settings.VALID_CARD_NUMBERS:
+            raise serializers.ValidationError(
+                'Invalid card number'
+            )
+        return value
 
     def validate_cart(self, value):
         cart = value
