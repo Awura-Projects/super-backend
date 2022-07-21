@@ -1,7 +1,7 @@
 from django.urls import path
 
 from orders.admin_routers import router as order_router
-from payments.routers import router as payment_router
+from payments.admin_routers import router as payment_router
 
 urlpatterns = []
 
