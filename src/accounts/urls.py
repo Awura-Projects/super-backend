@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 
 from .views import (
     CustomerSignupAPIView, CustomerUpdateAPIView,
@@ -7,7 +7,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', include("accounts.routers")),
     path('account/', UserRetrieveAPIView.as_view(), name='user-detail'),
     path('account/<int:pk>/', AccountRetrieveAPIView.as_view(), name='account-detail'),
     path('change-password/', PasswordChangeAPIView.as_view(), name='change-password'),
