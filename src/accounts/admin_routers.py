@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-from .viewsets import (
+from .admin_viewsets import (
     EmployeeViewSet, SupplierViewSet,
     DeliveryViewSet
 )
