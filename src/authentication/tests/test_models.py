@@ -1,5 +1,6 @@
 from django.contrib.auth.models import Group
 from django.test import TestCase
+from django.db.utils import IntegrityError
 
 from authentication.models import User
 
@@ -16,3 +17,9 @@ class TestModels(TestCase):
     def test_user_type(self):
         user_type = self.user.user_type
         self.assertEqual(user_type, self.group.name)
+
+    def test_unique_email(self):
+        with self.assertRaises(IntegrityError):
+            User.objects.create(
+                email=self.user.email,
+            )
