@@ -11,6 +11,7 @@ class Cart(Model):
         on_delete=models.CASCADE
     )
     order_date = models.DateTimeField(_("Order Date"), auto_now_add=True)
+    delivery = models.BooleanField(_("Delivery"), default=False)
     delivery_man = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("Delivery Man"),
