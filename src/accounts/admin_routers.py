@@ -5,11 +5,7 @@ from .admin_viewsets import (
     DeliveryViewSet
 )
 
-urlpatterns = []
-
 router = routers.DefaultRouter()
 router.register('employee', EmployeeViewSet)
 router.register('supplier', SupplierViewSet)
 router.register('delivery', DeliveryViewSet)
-
-urlpatterns += router.urls
