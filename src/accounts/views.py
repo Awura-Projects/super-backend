@@ -21,7 +21,7 @@ token_generator = PasswordResetTokenGenerator()
 
 
 class ForgotPasswordAPIView(views.APIView):
-    serializer_class = PasswordResetAPIView
+    serializer_class = PasswordResetForm
 
     def post(self, request):
         email = request.data.get('email')
@@ -37,8 +37,8 @@ class ForgotPasswordAPIView(views.APIView):
                        "\n\nThere was a request to reset your password." +
                        "If you are the one who requested this service click on the link below." +
                        "If not you can ignore this email. \n\n\n Thank you for your time" +
-                       f"Link:- {}")
-            email_message = EmailMessage(mail_subject, message, to=email)
+                       f"Link:- {link}")
+            email_message = EmailMessage(mail_subject, message, to=[email])
             email_message.send()
 
         return Response(
@@ -60,6 +60,7 @@ class PasswordResetAPIView(views.APIView):
                 serializer.is_valid(raise_exception=True)
                 password = serializer.validated_data.get('new_password')
                 user.set_password(password)
+                user.save()
 
                 return Response(
                     {
