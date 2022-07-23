@@ -64,7 +64,7 @@ class PasswordResetAPIView(views.APIView):
 
                 return Response(
                     {
-                        'success': 'Ok'
+                        'data': 'Password changed successfuly'
                     }, status=200
                 )
 
