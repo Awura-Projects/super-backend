@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from rest_framework import views, generics, permissions
 from rest_framework.response import Response
@@ -28,7 +27,6 @@ class ForgotPasswordAPIView(views.APIView):
         user = User.objects.filter(email=email)
         if user.exists():
             user = user.first()
-            current_site = get_current_site(request)
             token = token_generator.make_token(user)
             link = reverse('reset-password',
                            kwargs={'uid': user.id, 'token': token}, request=request)
