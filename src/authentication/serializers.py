@@ -4,14 +4,18 @@ from model_utils import Choices
 
 from .models import User
 
+
 class UserSerializer(serializers.ModelSerializer):
     """
     A serializer for the user model
     """
     # id = serializers.HyperlinkedIdentityField('user-detail')
-    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-    confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
     user_type = serializers.CharField(read_only=True)
+
     class Meta:
         """
         Meta class
@@ -30,7 +34,7 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_password(self, value):
         validate_password(value)
         return value
-    
+
     def validate(self, attrs):
         password = attrs.get('password')
         confirm_password = attrs.get('confirm_password')
@@ -43,7 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
             )
 
         return attrs
-    
+
     def create(self, validated_data):
         validated_data.pop("confirm_password")
 
@@ -53,10 +57,14 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+
 class PasswordChangeForm(serializers.Serializer):
-    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-    new_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-    confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
+    new_password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
 
     def validate_new_password(self, value):
         validate_password(value)
@@ -93,3 +101,7 @@ class PasswordChangeForm(serializers.Serializer):
         password = self.validated_data['new_password']
         user.set_password(password)
         user.save()
+
+
+class PasswordResetForm(serializers.Serializer):
+    email = serializers.EmailField()
