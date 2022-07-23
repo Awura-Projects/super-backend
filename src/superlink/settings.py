@@ -116,7 +116,8 @@ if DATABASE_ON:
         }
     }
 
-
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
