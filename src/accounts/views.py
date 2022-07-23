@@ -41,7 +41,7 @@ class ForgotPasswordAPIView(views.APIView):
 
         return Response(
             {
-                "data": "If there is a user with email we have sent a reset email. Check your email"
+                "detail": "If there is a user with email we have sent a reset email. Check your email"
             }, status=200
         )
 
@@ -62,13 +62,13 @@ class PasswordResetAPIView(views.APIView):
 
                 return Response(
                     {
-                        'data': 'Password changed successfuly'
+                        'detail': 'Password changed successfuly'
                     }, status=200
                 )
 
         return Response(
             {
-                'data': 'Activation link invalid.'
+                'detail': 'Activation link invalid.'
             }, status=400
         )
 
