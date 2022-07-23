@@ -1,8 +1,15 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from rest_framework import views, generics, permissions
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
-from authentication.serializers import UserSerializer, PasswordChangeForm
+from authentication.serializers import (
+    UserSerializer, PasswordChangeForm,
+    PasswordResetForm, ChangePasswordForm
+)
 from .permissions import (
     IsSelfCustomer,
     IsAdminOrDeliveryOrSelfCustomer,
@@ -10,6 +17,62 @@ from .permissions import (
 from .serializers import CustomerSignupForm, CustomerUpdateForm
 
 User = get_user_model()
+token_generator = PasswordResetTokenGenerator()
+
+
+class ForgotPasswordAPIView(views.APIView):
+    serializer_class = PasswordResetAPIView
+
+    def post(self, request):
+        email = request.data.get('email')
+        user = User.objects.filter(email=email)
+        if user.exists():
+            user = user.first()
+            current_site = get_current_site(request)
+            token = token_generator.make_token(user)
+            link = reverse('reset-password',
+                           kwargs={'uid': user.id, 'token': token}, request=request)
+            mail_subject = 'Reset your password'
+            message = (f"Hello, {user.get_full_name()}" +
+                       "\n\nThere was a request to reset your password." +
+                       "If you are the one who requested this service click on the link below." +
+                       "If not you can ignore this email. \n\n\n Thank you for your time" +
+                       f"Link:- {}")
+            email_message = EmailMessage(mail_subject, message, to=email)
+            email_message.send()
+
+        return Response(
+            {
+                "data": "If there is a user with email we have sent a reset email. Check your email"
+            }, status=200
+        )
+
+
+class PasswordResetAPIView(views.APIView):
+    serializer_class = ChangePasswordForm
+
+    def post(self, request, uid=None, token=None):
+        user = User.objects.filter(id=uid)
+        if user.exists():
+            user = user.first()
+            if token_generator.check_token(user, token):
+                serializer = self.serializer_class(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                password = serializer.validated_data.get('new_password')
+                user.set_password(password)
+
+                return Response(
+                    {
+                        'success': 'Ok'
+                    }, status=200
+                )
+
+        return Response(
+            {
+                'data': 'Activation link invalid.'
+            }, status=400
+        )
+
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
@@ -21,6 +84,7 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
         user = self.request.user
 
         return user
+
 
 class CustomerSignupAPIView(views.APIView):
     serializer_class = CustomerSignupForm
@@ -60,12 +124,14 @@ class PasswordChangeAPIView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def put(self, request):
-        serializer = PasswordChangeForm(data=request.data, context={'request': request})
+        serializer = PasswordChangeForm(
+            data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
         return Response(serializer.data)
+
 
 class AccountRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
