@@ -3,11 +3,15 @@ from rest_framework import serializers
 from products.models import Product
 from .models import Cart, CartItem
 
+
 class CartItemSerializer(serializers.ModelSerializer):
     id = serializers.HyperlinkedIdentityField('cartitem-detail')
     cart = serializers.HyperlinkedRelatedField('cart-detail', read_only=True)
-    unit_price = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
-    discount = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
+    unit_price = serializers.DecimalField(
+        max_digits=6, decimal_places=2, read_only=True)
+    discount = serializers.DecimalField(
+        max_digits=6, decimal_places=2, read_only=True)
+
     class Meta:
         model = CartItem
         fields = (
@@ -98,14 +102,18 @@ class CartItemSerializer(serializers.ModelSerializer):
 
         return cart_item
 
+
 class CartSerializer(serializers.ModelSerializer):
     id = serializers.HyperlinkedIdentityField('cart-detail')
-    user = serializers.HyperlinkedRelatedField("account-detail", read_only=True)
-    delivery_man = serializers.HyperlinkedRelatedField("delivery-detail", read_only=True)
-    items = CartItemSerializer(many=True)
+    user = serializers.HyperlinkedRelatedField(
+        "account-detail", read_only=True)
+    delivery_man = serializers.HyperlinkedRelatedField(
+        "delivery-detail", read_only=True)
+    items = CartItemSerializer(many=True, read_only=True)
     closed = serializers.BooleanField(read_only=True)
     payed = serializers.BooleanField(read_only=True)
     closed_time = serializers.DateTimeField(read_only=True)
+
     class Meta:
         model = Cart
         fields = (
