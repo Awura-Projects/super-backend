@@ -7,7 +7,8 @@ from .models import Cart
 from .permissions import IsSelfCart
 from .serializers import CartSerializer
 
-class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
+
+class CartRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
     permission_classes = [
         permissions.IsAuthenticated,
@@ -21,6 +22,7 @@ class CartRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
         queryset = Cart.objects.filter(user=user)
         return queryset
 
+
 class CartListAPIView(generics.ListAPIView):
     serializer_class = CartSerializer
     permission_classes = [
@@ -33,6 +35,7 @@ class CartListAPIView(generics.ListAPIView):
 
         queryset = Cart.objects.filter(user=user)
         return queryset
+
 
 class CartCloseAPIView(views.APIView):
     permission_classes = [
