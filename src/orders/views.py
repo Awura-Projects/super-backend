@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from .models import Cart
 from .permissions import IsSelfCart
-from .serializers import CartSerializer
+from .serializers import CartSerializer, CartCloseSerializer
 
 
 class CartRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -38,6 +38,7 @@ class CartListAPIView(generics.ListAPIView):
 
 
 class CartCloseAPIView(views.APIView):
+    serializer_class = CartCloseSerializer
     permission_classes = [
         permissions.IsAuthenticated,
         permissions.DjangoModelPermissions,
@@ -50,30 +51,10 @@ class CartCloseAPIView(views.APIView):
         return Cart.objects.filter(user=user)
 
     def post(self, request, format=None):
-        cart_id = request.data.get('cart')
-        if cart_id is None:
-            data = {
-                'cart': 'This value is required'
-            }
-            return Response(data=data, status=400)
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        cart = serializer.save()
+        cart_serializer = CartSerializer(cart, context={'request': request})
 
-        cart = get_object_or_404(Cart, pk=cart_id)
-        has_perm = IsSelfCart().has_object_permission(request, self, cart)
-        if not has_perm:
-            data = {
-                'detail': 'Not found.'
-            }
-            return Response(data=data, status=404)
-
-        if cart.closed:
-            data = {
-                'detail': 'This cart is already closed.'
-            }
-            return Response(data=data, status=400)
-
-        cart.closed = True
-        cart.closed_time = timezone.now()
-        cart.save()
-        serializer = CartSerializer(cart, context={'request': request})
-
-        return Response(serializer.data)
+        return Response(cart_serializer.data)
