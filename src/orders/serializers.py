@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import serializers
 
 from products.models import Product
@@ -127,3 +129,30 @@ class CartSerializer(serializers.ModelSerializer):
             'delivery',
             'items',
         )
+
+
+class CartCloseSerializer(serializers.Serializer):
+    cart = serializers.IntegerField()
+
+    def validate_cart(self, value):
+        request = self.context['request']
+        user = request.user
+        cart = get_object_or_404(Cart, pk=value, user=user)
+
+        if cart.closed:
+            raise serializers.ValidationError(
+                'This cart is already closed'
+            )
+
+        return value
+
+    def save(self):
+        request = self.context['request']
+        user = request.user
+        cart_id = self.validated_data['cart']
+        cart = get_object_or_404(Cart, pk=cart_id, user=user)
+        cart.closed = True
+        cart.closed_time = timezone.now()
+        cart.save()
+
+        return cart
