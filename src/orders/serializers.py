@@ -124,5 +124,6 @@ class CartSerializer(serializers.ModelSerializer):
             'closed',
             'payed',
             'closed_time',
+            'delivery',
             'items',
         )
