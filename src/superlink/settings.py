@@ -140,6 +140,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authentication model
 AUTH_USER_MODEL = 'authentication.User'
 
+# Password reset token expiration time in seconds
+PASSWORD_RESET_TIMEOUT = timedelta(hours=6).seconds
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
