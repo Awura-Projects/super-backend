@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+from distutils.debug import DEBUG
 import os
 
 from datetime import timedelta
@@ -26,11 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
-
+SECRET_KEY='*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
-
-ALLOWED_HOSTS = []
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     # third party applications
     'rest_framework',
     'crispy_forms',
-
+    'rest_framework.authtoken',
     # local application
     'authentication',
     'products',
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'orders',
     'payments',
     'staff',
+    'delivery',
 ]
 
 MIDDLEWARE = [
@@ -159,8 +161,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = '/media/'
+# MEDIA_ROOT = '/media/'
 MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
