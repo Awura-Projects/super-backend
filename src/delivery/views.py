@@ -1,9 +1,3 @@
-# deliverabel cart list (method)
-# cart.object.filter to list all the cart delivery man is null
-# serilizer tetkemash cart id becha mekebl
-# accept cart id check weather it is valid or not ketyaza teyzual menanin eyalen 
-# using cart ide and post method 
-# cart.deliveryman = request.user
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import permissions
@@ -43,8 +37,10 @@ class DeliveryCloseAPIView(APIView):
 
     def post(self, request, pk, format=None):
         cart = self.get_object(pk)
-        if cart.delivery is False:
+        if cart.delivery is False and cart.delivery_man is not None:
             return Response({"error": "this delivery has been closed "}, status=400)
+        elif cart.delivery is False:
+            return Response({"detail" : "This cart is not deliverable"}, status=400)
         cart.delivery = False
         cart.delivery_man = request.user
         return Response(status=200)
