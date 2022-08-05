@@ -4,10 +4,12 @@ from .models import Payment
 from .permissions import IsOwner
 from .serializers import PaymentSerailzer
 
+
 class PaymentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PaymentSerailzer
     permission_classes = [
         permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
     ]
 
     def get_queryset(self):
@@ -16,10 +18,12 @@ class PaymentListCreateAPIView(generics.ListCreateAPIView):
 
         return queryset
 
+
 class PaymentRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = PaymentSerailzer
     permission_classes = [
         permissions.IsAuthenticated,
+        permissions.DjangoModelPermissions,
         IsOwner,
     ]
 
