@@ -18,7 +18,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     Employee model serializer
     """
     queryset = Employee.objects_with_deleted.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.DjangoModelPermissions]
     serializer_class = EmployeeSerializer
 
     def get_serializer_class(self):
@@ -41,7 +41,7 @@ class SupplierViewSet(viewsets.ModelViewSet):
     Supplier model serializer
     """
     queryset = Supplier.objects_with_deleted.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.DjangoModelPermissions]
     serializer_class = SupplierSerializer
 
     def get_serializer_class(self):
@@ -64,7 +64,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     Delivery model serializer
     """
     queryset = Delivery.objects_with_deleted.all()
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAdminUser, permissions.DjangoModelPermissions]
     serializer_class = DeliverySerializer
 
     def get_serializer_class(self):
