@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-from distutils.debug import DEBUG
 import os
 
 from datetime import timedelta
@@ -27,11 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
-SECRET_KEY='*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG")
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -46,7 +43,8 @@ INSTALLED_APPS = [
     # third party applications
     'rest_framework',
     'crispy_forms',
-    'rest_framework.authtoken',
+    'corsheaders',
+
     # local application
     'authentication',
     'products',
@@ -60,6 +58,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,6 +141,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authentication model
 AUTH_USER_MODEL = 'authentication.User'
 
+# Password reset token expiration time in seconds
+PASSWORD_RESET_TIMEOUT = timedelta(hours=6).seconds
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -187,3 +189,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
+
+CORS_ALLOWED_ORIGINS = [
+    # 'http://localhost:3000',
+]

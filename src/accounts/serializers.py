@@ -8,12 +8,14 @@ from .models import Employee, Supplier, Delivery
 
 User = get_user_model()
 
+
 class EmployeeSerializer(serializers.ModelSerializer):
     """
     Employee account create serializer
     """
     id = serializers.HyperlinkedIdentityField('employee-detail')
     user = UserSerializer()
+
     class Meta:
         """
         Meta class
@@ -47,11 +49,13 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
         return employee
 
+
 class EmployeeUpdateSerializer(serializers.ModelSerializer):
     """
     Employee account update serializer
     """
     id = serializers.HyperlinkedIdentityField('employee-detail')
+
     class Meta:
         """
         Meta class
@@ -71,6 +75,7 @@ class SupplierSerializer(serializers.ModelSerializer):
     """
     id = serializers.HyperlinkedIdentityField('supplier-detail')
     user = UserSerializer()
+
     class Meta:
         """
         Meta class
@@ -104,11 +109,13 @@ class SupplierSerializer(serializers.ModelSerializer):
 
         return Supplier
 
+
 class SupplierUpdateSerializer(serializers.ModelSerializer):
     """
     Supplier account update serializer
     """
     id = serializers.HyperlinkedIdentityField('supplier-detail')
+
     class Meta:
         """
         Meta class
@@ -128,6 +135,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     """
     id = serializers.HyperlinkedIdentityField('delivery-detail')
     user = UserSerializer()
+
     class Meta:
         """
         Meta class
@@ -161,11 +169,13 @@ class DeliverySerializer(serializers.ModelSerializer):
 
         return Delivery
 
+
 class DeliveryUpdateSerializer(serializers.ModelSerializer):
     """
     Delivery account update serializer
     """
     id = serializers.HyperlinkedIdentityField('delivery-detail')
+
     class Meta:
         """
         Meta class
@@ -178,9 +188,12 @@ class DeliveryUpdateSerializer(serializers.ModelSerializer):
             'identification_card',
         )
 
+
 class CustomerSignupForm(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, style={'input_type': 'password'})
-    confirm_password = serializers.CharField(write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
+    confirm_password = serializers.CharField(
+        write_only=True, style={'input_type': 'password'})
 
     class Meta:
         """
@@ -222,8 +235,10 @@ class CustomerSignupForm(serializers.ModelSerializer):
         user.set_password(password)
         group, created = Group.objects.get_or_create(name='customer')
         user.groups.add(group)
+        user.save()
 
         return user
+
 
 class CustomerUpdateForm(serializers.ModelSerializer):
     class Meta:

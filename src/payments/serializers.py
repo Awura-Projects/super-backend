@@ -4,7 +4,8 @@ from rest_framework import serializers
 from orders.models import CartItem, Cart
 from .models import Payment
 
-def cart_item_calculator(cart_item :CartItem):
+
+def cart_item_calculator(cart_item: CartItem):
     quantity = cart_item.quantity
     unit_price = cart_item.unit_price
     if cart_item.discount is None:
@@ -15,6 +16,7 @@ def cart_item_calculator(cart_item :CartItem):
 
     return quantity * discounted_price
 
+
 class CartHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
     def get_queryset(self):
         request = self.context.get('request')
@@ -22,14 +24,28 @@ class CartHyperlinkedRelatedField(serializers.HyperlinkedRelatedField):
 
         return Cart.objects.filter(user=user)
 
+
+class CartInputField(serializers.PrimaryKeyRelatedField):
+    def get_queryset(self):
+        request = self.context.get('request')
+        user = request.user
+
+        return Cart.objects.filter(user=user)
+
+
 class PaymentSerailzer(serializers.ModelSerializer):
-    user = serializers.HyperlinkedRelatedField('account-detail', read_only=True)
+    id = serializers.HyperlinkedIdentityField('payment-detail')
+    user = serializers.HyperlinkedRelatedField(
+        'account-detail', read_only=True)
     cart = CartHyperlinkedRelatedField('cart-detail')
-    total_amount = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    total_amount = serializers.DecimalField(
+        max_digits=10, decimal_places=2, read_only=True)
     payment_date = serializers.DateTimeField(read_only=True)
+
     class Meta:
         model = Payment
         fields = (
+            'id',
             'user',
             'cart',
             'card_number',
@@ -37,6 +53,10 @@ class PaymentSerailzer(serializers.ModelSerializer):
             'total_amount',
             'payment_date',
         )
+
+    def to_internal_value(self, data):
+        self.fields['cart'] = CartInputField()
+        return super().to_internal_value(data)
 
     def validate_card_number(self, value):
         if not value in settings.VALID_CARD_NUMBERS:

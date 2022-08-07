@@ -24,6 +24,8 @@ class ForgotPasswordAPIView(views.APIView):
 
     def post(self, request):
         email = request.data.get('email')
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
         user = User.objects.filter(email=email)
         if user.exists():
             user = user.first()
