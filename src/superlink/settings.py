@@ -97,13 +97,14 @@ DATABASES = {
     }
 }
 
-DBNAME = os.getenv("DBNAME")
-DBUSER = os.getenv("DBUSER")
-DBPASSWORD = os.getenv("DBPASSWORD")
-DBHOST = os.getenv("DBHOST")
-DBPORT = os.getenv("DBPORT")
+DBNAME = os.getenv("POSTGRES_DB")
+DBUSER = os.getenv("POSTGRES_USER")
+DBPASSWORD = os.getenv("POSTGRES_PASSWORD")
+DBHOST = os.getenv("POSTGRES_HOST")
+DBPORT = os.getenv("POSTGRES_PORT")
 
 DATABASE_ON = all([DBNAME, DBUSER, DBPASSWORD, DBHOST, DBPORT])
+DATABASE_ON = False
 
 if DATABASE_ON:
     DATABASES = {
