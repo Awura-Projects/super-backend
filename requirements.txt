@@ -13,7 +13,6 @@ fields==5.0.0
 gunicorn==20.1.0
 phonenumberslite==8.12.51
 Pillow==9.2.0
-psycopg2==2.9.3
 psycopg2-binary==2.9.3
 pycodestyle==2.8.0
 PyJWT==2.4.0
