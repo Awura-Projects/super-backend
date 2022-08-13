@@ -18,8 +18,8 @@ services:
     build:
       context: .
     volumes:
-      - static:/app/static
-      - media:/app/media
+      - static:/static
+      - media:/media
     ports:
       - "8000:8000"
     env_file:
