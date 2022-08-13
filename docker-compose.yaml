@@ -25,7 +25,16 @@ services:
     env_file:
       - src/.env
 
-
+  nginx:
+    depends_on:
+      - super_link
+    build:
+      context: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - static:/static
+      - media:/media
 
 volumes:
   postgres_data:
