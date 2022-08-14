@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework.response import Response
-
+from .permissions import IsDelivery
 from orders.models import Cart
 from orders.serializers import CartSerializer
 
@@ -11,12 +11,11 @@ class DeliveryListAPIView(generics.ListAPIView):
     serializer_class = CartSerializer
     permission_classes = [
         permissions.IsAuthenticated,
+        IsDelivery,
         permissions.DjangoModelPermissions
     ]
 
     def get_queryset(self):
-
-
         queryset = Cart.objects.filter(payed=True, closed=True, delivery=True)
         return queryset
 
