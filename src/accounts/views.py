@@ -34,9 +34,10 @@ class ForgotPasswordAPIView(views.APIView):
                            kwargs={'uid': user.id, 'token': token}, request=request)
             mail_subject = 'Reset your password'
             message = (f"Hello, {user.get_full_name()}" +
-                       "\n\nThere was a request to reset your password." +
-                       "If you are the one who requested this service click on the link below." +
-                       "If not you can ignore this email. \n\n\n Thank you for your time" +
+                       "\n\nThere was a request to reset your password. " +
+                       "If you are the one who requested this service click on the link below. " +
+                       "If you are not trying to reset your password you can ignore this email. " +
+                       "\n\n\n Thank you for your time\n\n\n" +
                        f"Link:- {link}")
             email_message = EmailMessage(mail_subject, message, to=[email])
             email_message.send()
