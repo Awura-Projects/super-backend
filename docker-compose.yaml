@@ -9,6 +9,8 @@ services:
       - src/.env
     ports:
       - "5434:5434"
+    expose:
+      - 5434
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
