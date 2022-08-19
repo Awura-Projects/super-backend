@@ -120,6 +120,17 @@ if DATABASE_ON:
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+
+EMAIL_ON = all([EMAIL_USE_TLS, EMAIL_HOST, EMAIL_HOST_USER,
+               EMAIL_HOST_PASSWORD, EMAIL_PORT])
+if EMAIL_ON:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
