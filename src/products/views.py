@@ -12,8 +12,7 @@ from rest_framework.response import Response
 class ProductViewSet(viewsets.ModelViewSet):   
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    # permission_classes = [IsAuthenticated]
-    # permission_classes = (permissions.IsAuthenticatedOrIsAdmin)
+    permission_classes = [IsAuthenticated]
 
     def list(self, request):
         producer = request.GET.get('producer')
