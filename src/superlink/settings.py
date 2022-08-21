@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # third party applications
-      'drf_yasg',
+    'drf_yasg',
     'rest_framework',
     'crispy_forms',
     'corsheaders',
