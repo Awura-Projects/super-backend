@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Product, Producer
+from .models import Product
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -9,8 +10,8 @@ class ProductAdmin(admin.ModelAdmin):
             "fields": (
                 'producer',
                 'posted_by',
-                'productName',
-                'productType',
+                'product_name',
+                'product_type',
                 'description',
                 'amount',
                 'price',
@@ -19,12 +20,12 @@ class ProductAdmin(admin.ModelAdmin):
         }),
     )
 
-@admin.register(Producer)
-class ProducerAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {
-            "fields": (
-                'title',
-            ),
-        }),
-    )
+# @admin.register(Producer)
+# class ProducerAdmin(admin.ModelAdmin):
+#     fieldsets = (
+#         (None, {
+#             "fields": (
+#                 'title',
+#             ),
+#         }),
+#     )
