@@ -27,22 +27,22 @@ from rest_framework_simplejwt.views import (
 from .authentication_view import TokenObtainView
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="API Doc",
-      default_version='v1',
-      description="super link",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@xyz.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=[permissions.AllowAny],
+    openapi.Info(
+        title="API Doc",
+        default_version='v1',
+        description="super link",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@xyz.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
 )
 
 
 urlpatterns = [
-    
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('swagger/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
     path('admin/', admin.site.urls),
     path('staff/', include('staff.urls')),
     path('api/token/', TokenObtainView.as_view(), name='token_obtain_pair'),
