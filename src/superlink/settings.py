@@ -13,7 +13,6 @@ import os
 
 from datetime import timedelta
 from pathlib import Path
-from re import T
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -46,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     'corsheaders',
-  
 
     # local application
     'authentication',
