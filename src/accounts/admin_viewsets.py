@@ -23,7 +23,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     """
     Employee model serializer
     """
-    queryset = Employee.objects_with_deleted.all()
+    queryset = Employee.objects.all()
     permission_classes = [permissions.IsAdminUser,
                           permissions.DjangoModelPermissions]
     serializer_class = EmployeeSerializer
@@ -48,7 +48,7 @@ class SupplierViewSet(viewsets.ModelViewSet):
     """
     Supplier model serializer
     """
-    queryset = Supplier.objects_with_deleted.all()
+    queryset = Supplier.objects.all()
     permission_classes = [permissions.IsAdminUser,
                           permissions.DjangoModelPermissions]
     serializer_class = SupplierSerializer
@@ -73,7 +73,7 @@ class DeliveryViewSet(viewsets.ModelViewSet):
     """
     Delivery model serializer
     """
-    queryset = Delivery.objects_with_deleted.all()
+    queryset = Delivery.objects.all()
     permission_classes = [permissions.IsAdminUser,
                           permissions.DjangoModelPermissions]
     serializer_class = DeliverySerializer
@@ -91,7 +91,6 @@ class DeliveryViewSet(viewsets.ModelViewSet):
         if self.action == 'retrieve':
             permission_classes = [
                 IsAdminOrSelfDelivery,
-                IsCustomer,
             ]
             return [permission() for permission in permission_classes]
         return super().get_permissions()
