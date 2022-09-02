@@ -23,6 +23,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = Employee
         fields = (
             'id',
+            'pk',
             'user',
             'profile_picture',
             'birthdate',
@@ -63,6 +64,7 @@ class EmployeeUpdateSerializer(serializers.ModelSerializer):
         model = Employee
         fields = (
             'id',
+            'pk',
             'profile_picture',
             'birthdate',
             'identification_card',
@@ -83,6 +85,7 @@ class SupplierSerializer(serializers.ModelSerializer):
         model = Supplier
         fields = (
             'id',
+            'pk',
             'user',
             'profile_picture',
             'birthdate',
@@ -123,6 +126,7 @@ class SupplierUpdateSerializer(serializers.ModelSerializer):
         model = Supplier
         fields = (
             'id',
+            'pk',
             'profile_picture',
             'birthdate',
             'identification_card',
@@ -143,6 +147,7 @@ class DeliverySerializer(serializers.ModelSerializer):
         model = Delivery
         fields = (
             'id',
+            'pk',
             'user',
             'profile_picture',
             'birthdate',
@@ -183,6 +188,7 @@ class DeliveryUpdateSerializer(serializers.ModelSerializer):
         model = Delivery
         fields = (
             'id',
+            'pk',
             'profile_picture',
             'birthdate',
             'identification_card',
