@@ -3,12 +3,13 @@ from django.urls import path
 from .views import (
     CustomerSignupAPIView, CustomerUpdateAPIView,
     PasswordChangeAPIView, UserRetrieveAPIView,
-    AccountRetrieveAPIView, ForgotPasswordAPIView,
-    PasswordResetAPIView
+    UserUpdateAPIView, AccountRetrieveAPIView,
+    ForgotPasswordAPIView, PasswordResetAPIView
 )
 
 urlpatterns = [
     path('account/', UserRetrieveAPIView.as_view(), name='user-detail'),
+    path('account/update/', UserUpdateAPIView.as_view(), name='user-update'),
     path('account/<int:pk>/', AccountRetrieveAPIView.as_view(),
          name='account-detail'),
     path('forgot-password/', ForgotPasswordAPIView.as_view(), name='forgot-password'),
