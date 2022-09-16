@@ -58,6 +58,24 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserUpdateSerializer(serializers.ModelSerializer):
+    """
+    A serializer to update user data
+    """
+
+    class Meta:
+        """
+        Meta class
+        """
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'phone',
+        )
+
+
 class PasswordChangeForm(serializers.Serializer):
     password = serializers.CharField(
         write_only=True, style={'input_type': 'password'})
