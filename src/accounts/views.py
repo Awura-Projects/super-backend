@@ -6,8 +6,9 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 from authentication.serializers import (
-    UserSerializer, PasswordChangeForm,
-    PasswordResetForm, ChangePasswordForm
+    UserSerializer, UserUpdateSerializer,
+    PasswordChangeForm, PasswordResetForm,
+    ChangePasswordForm
 )
 from .permissions import (
     IsSelfCustomer,
@@ -81,6 +82,24 @@ class UserRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+
+    def get_object(self):
+        user = self.request.user
+
+        return user
+
+
+class UserUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserUpdateSerializer(instance=user)
+
+        return Response(serializer.data)
 
     def get_object(self):
         user = self.request.user
