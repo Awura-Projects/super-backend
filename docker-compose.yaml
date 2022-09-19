@@ -14,7 +14,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  super_link:
+  superlink:
     depends_on:
       - postgres_db
     build:
@@ -23,20 +23,38 @@ services:
       - static:/static
       - media:/media
     ports:
-      - "8000:8000"
+      - "8080:8080"
     env_file:
       - src/.env
 
   nginx:
     depends_on:
-      - super_link
+      - superlink
     build:
       context: ./nginx
     ports:
-      - "80:80"
+      - "8888:80"
     volumes:
       - static:/static
       - media:/media
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "35874:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: always
+
+  prometheus:
+    depends_on:
+      - superlink
+    build:
+      context: ./prometheus
+    volumes:
+      - prometheus-data:/prometheus
+    ports:
+      - 35875:9090
 
 volumes:
   postgres_data:
